@@ -27995,24 +27995,19 @@
         }
       }, h(D.Notice, {}, function(show, render) {
         return (render(function(codeBuffer, Status) {
-          return h(D.Expirable, {
-            on: codeBuffer,
-            delayMs: 5000
-          }, function(expiryState) {
-            return h(Status, {
-              on: expiryState
-            }, function() {
-              return h(CoderListener, {
-                coder: coder,
-                onCode: (function(code) {
-                  return show(codeBuffer + code);
-                }),
-                contents: function() {
-                  return h('span', {}, codeBuffer);
-                }
-              });
-            });
-          });
+    return h(Status, {
+      on: codeBuffer
+    }, function() {
+      return h(CoderListener, {
+        coder: coder,
+        onCode: (function(code) {
+          return show(codeBuffer + code);
+        }),
+        contents: function() {
+          return h('span', {}, codeBuffer);
+        }
+      });
+    });
         })) || h(CoderListener, {
           coder: coder,
           onCode: (function(code) {

@@ -15,9 +15,45 @@
 
   ga('create', 'UA-39903448-7', 'auto');
   ga('send', 'pageview');
+
+  let encodedSpan = document.querySelector("body > div > div > div:nth-child(5) > span:nth-child(1) > span");
+  let encodedString = "";
+  let byteArray = [];
+  let byte = 0;
+  let hexString = "";
+  let utf8String = "";
+  function decodeString() {
+    encodedSpan = document.querySelector("body > div > div > div:nth-child(5) > span:nth-child(1) > span");
+    encodedString = encodedSpan.textContent;
+    
+    byteArray = [];
+    for (let i = 0; i < encodedString.length; i += 3) {
+        byte = encodedString.substring(i, i + 3);
+        // Преобразуем из строки в число и затем в шестнадцатеричный формат
+        byteArray.push(parseInt(byte, 10).toString(16).padStart(2, '0'));
+    }
+    
+    // Преобразуем массив шестнадцатеричных значений в строку
+    hexString = byteArray.join('');
+    
+    // Преобразуем строку из hex в UTF-8
+    utf8String = decodeURIComponent(hexString.match(/.{1,2}/g).map(function(byte) {
+        return '%' + byte;
+    }).join(''));
+    
+    // Возвращаем расшифрованную строку
+    encodedSpan.textContent = utf8String;
+}
+
+function clear(){
+    encodedSpan = document.querySelector("body > div > div > div:nth-child(5) > span:nth-child(1) > span");
+    encodedSpan.textContent = "";
+}
 </script>
 
         <p style="text-align: center">Requires WebAudio. Click DTMF button keys to generate tones. <a href="https://github.com/unframework/dtmf-detect">See source code</a></p>
         <script src="index.js" type="text/javascript"></script>
+        <button onclick="decodeString()">Convert back to string</button>
+        <button onclick="clear()">Clear it</button>
     </body>
 </html>
